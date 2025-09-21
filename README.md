@@ -1,7 +1,10 @@
-# DreamCore - AI-Powered Game Platform
+# DreamCore - AI-DD Game Platform
 
-[![Product Hunt](https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=123456&theme=light)](https://www.producthunt.com/products/dreamcore)
-[![Twitter Follow](https://img.shields.io/twitter/follow/playdreamcore?style=social)](https://x.com/playdreamcore)
+## DreamCoreの紹介ページです
+
+**GitHub Pages**
+**https://mayo1982jp.github.io/DreamCore-website/**
+
 
 **AIで夢をゲームに** - テキストプロンプトだけでモバイルゲームを即座に生成・実行できる革新的なプラットフォーム
 
@@ -134,10 +137,9 @@ dreamcore/
 ## 🌐 関連リンク
 
 - **公式サイト**: [https://www.dreamcore.gg](https://www.dreamcore.gg)
-- **Twitter**: [@playdreamcore](https://x.com/playdreamcore)
-- **Product Hunt**: [producthunt.com/products/dreamcore](https://www.producthunt.com/products/dreamcore)
+- **Twitter**: [@playdreamcore](https://x.com/playdreamcore) [![Product Hunt](https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=123456&theme=light)](https://www.producthunt.com/products/dreamcore)
+- **Product Hunt**: [producthunt.com/products/dreamcore](https://www.producthunt.com/products/dreamcore) [![Twitter Follow](https://img.shields.io/twitter/follow/playdreamcore?style=social)](https://x.com/playdreamcore)
 - **Future Tools**: [futuretools.io/tools/dreamcore](https://www.futuretools.io/tools/dreamcore)
-
 
 ### ガイドライン
 - [Vercel](./AGENTS.md)のUI/UXガイドラインに従う
@@ -161,4 +163,5 @@ dreamcore/
 **DreamCore** - AIで夢をゲームに。2025年、創造性の新時代へ。
 
 *最終更新: 2025年9月21日*
+
 
