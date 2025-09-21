@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+    <meta name="description" content="DreamCore - AIを活用したゲーム作成・共有・プレイプラットフォーム。テキストプロンプトだけでモバイルゲームを即座に生成・実行できます。">
+    <title>DreamCore - AI-Powered Game Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 0 4rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #1a1a1a;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Game Examples */
+        .game-examples {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f8f9ff, #e8f2ff);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .game-preview {
+            height: 150px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .game-info {
+            padding: 1rem;
+        }
+
+        .game-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #1a1a1a;
+        }
+
+        .game-creator {
+            color: #667eea;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .demo-container {
+            background: #f8f9ff;
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 2px dashed #667eea;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .demo-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 4rem 0 3rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles */
+        .btn:focus,
+        .demo-input:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* Skip to content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1000;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">メインコンテンツにスキップ</a>
+
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">DreamCore</a>
+            <ul class="nav-links">
+                <li><a href="#features">特徴</a></li>
+                <li><a href="#games">ゲーム例</a></li>
+                <li><a href="#demo">デモ</a></li>
+                <li><a href="#about">概要</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>AIで夢をゲームに</h1>
+                    <p>テキストプロンプトだけでモバイルゲームを即座に生成・実行。プログラミング知識は不要です。ブラウザ上で創造性を解き放ちましょう。</p>
+                    <div class="cta-buttons">
+                        <a href="#demo" class="btn btn-primary">今すぐ作成</a>
+                        <a href="#games" class="btn btn-secondary">ゲームを見る</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">DreamCoreの特徴</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎮</div>
+                        <h3 class="feature-title">AIゲーム生成</h3>
+                        <p class="feature-description">自然言語のテキストプロンプトを入力するだけで、AIが自動的にゲームを生成します。「魚を運ぶペンギンのパズルゲーム」などの記述から、数秒でプレイ可能なゲームが完成します。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3 class="feature-title">モバイル最適化</h3>
+                        <p class="feature-description">HTML5ベースでブラウザネイティブ動作。インストール不要で、スマートフォンからでも快適にプレイ・作成できます。縦型フィード形式で直感的な操作性を実現。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3 class="feature-title">即時プレイ</h3>
+                        <p class="feature-description">生成されたゲームをその場でプレイ可能。アクション、パズル、カジュアル、アドベンチャーなど、多様なジャンルに対応。創造から実行までをシームレスに体験できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌐</div>
+                        <h3 class="feature-title">共有・リミックス</h3>
+                        <p class="feature-description">作成したゲームをコミュニティで共有。他のユーザーのゲームをリミックスして新しい作品を生み出せます。クリエイター同士の交流とコラボレーションを促進します。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">発見・コミュニティ</h3>
+                        <p class="feature-description">トレンドゲームの閲覧、クリエイターのフォロー、コメント機能で活発なコミュニティを形成。カテゴリ別にゲームを探せて、新しい発見が毎日あります。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">高速開発</h3>
+                        <p class="feature-description">従来のゲーム開発に比べて格段に速い開発サイクルを実現。アイデアを素早く検証し、複数バージョンを生成・イテレーションできます。失敗を恐れず創造性を発揮できます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="games" class="game-examples">
+            <div class="container">
+                <h2 class="section-title" style="color: #1a1a1a;">人気ゲーム例</h2>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-preview">Zen Fit</div>
+                        <div class="game-info">
+                            <div class="game-title">Zen Fit</div>
+                            <div class="game-creator">by takokoc</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-preview">Penguin Fish Delivery</div>
+                        <div class="game-info">
+                            <div class="game-title">Penguin Fish Delivery</div>
+                            <div class="game-creator">by notef</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-preview">Coin Collect</div>
+                        <div class="game-info">
+                            <div class="game-title">Coin Collect</div>
+                            <div class="game-creator">by notef</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-preview">Pressure Washer Cleaner</div>
+                        <div class="game-info">
+                            <div class="game-title">Pressure Washer Cleaner</div>
+                            <div class="game-creator">by notef</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-preview">Sky Stacker</div>
+                        <div class="game-info">
+                            <div class="game-title">Sky Stacker</div>
+                            <div class="game-creator">by notef</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-preview">Leaf Blower Challenge</div>
+                        <div class="game-info">
+                            <div class="game-title">Leaf Blower Challenge</div>
+                            <div class="game-creator">by notef</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-preview">HOOP SHOT</div>
+                        <div class="game-info">
+                            <div class="game-title">HOOP SHOT</div>
+                            <div class="game-creator">by notef</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-preview">Ink Battle</div>
+                        <div class="game-info">
+                            <div class="game-title">Ink Battle</div>
+                            <div class="game-creator">by notef</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="demo" class="demo-section">
+            <div class="container">
+                <h2 class="section-title">今すぐゲームを作成</h2>
+                <div class="demo-container">
+                    <p style="margin-bottom: 1rem; color: #666;">テキストプロンプトを入力して、AIがゲームを生成します。例: 「宇宙を舞台にしたシューティングゲーム」や「パズルで数字を並べ替えるゲーム」</p>
+                    <textarea
+                        class="demo-input"
+                        placeholder="あなたのゲームアイデアを入力してください..."
+                        rows="3"
+                        id="gamePrompt"
+                        aria-label="ゲーム生成プロンプト入力"
+                    ></textarea>
+                    <button class="demo-btn" id="generateBtn">
+                        🎮 ゲームを生成
+                    </button>
+                    <div id="demoResult" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 0.5rem; display: none;">
+                        <h4 style="margin-bottom: 0.5rem; color: #1a1a1a;">生成結果:</h4>
+                        <p id="demoText" style="color: #666;">ここに生成されたゲームの説明が表示されます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="features" style="background: linear-gradient(135deg, #f8f9ff, #e8f2ff);">
+            <div class="container">
+                <h2 class="section-title" style="color: #1a1a1a;">DreamCoreについて</h2>
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; color: #666;">
+                        DreamCoreは、2025年にローンチされたAIを活用したゲーム作成・共有・プレイプラットフォームです。
+                        ユーザーはテキストプロンプトだけでモバイルゲームを即座に生成・実行でき、プログラミング知識やアプリインストールは一切不要です。
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 0.5rem;">2025</div>
+                            <div style="color: #666;">ローンチ年</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 0.5rem;">4.9/5</div>
+                            <div style="color: #666;">Product Hunt評価</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 0.5rem;">無料</div>
+                            <div style="color: #666;">利用料金</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 0.5rem;">∞</div>
+                            <div style="color: #666;">創造の可能性</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://www.dreamcore.gg">公式サイト</a>
+                <a href="https://x.com/playdreamcore">Twitter</a>
+                <a href="https://www.producthunt.com/products/dreamcore">Product Hunt</a>
+                <a href="#demo">デモ</a>
+            </div>
+            <p>&copy; 2025 DreamCore. AIで夢をゲームに。</p>
+        </div>
+    </footer>
+
+    <script>
+        // Demo functionality
+        const generateBtn = document.getElementById('generateBtn');
+        const gamePrompt = document.getElementById('gamePrompt');
+        const demoResult = document.getElementById('demoResult');
+        const demoText = document.getElementById('demoText');
+
+        const gameExamples = [
+            {
+                prompt: "宇宙を舞台にしたシューティングゲーム",
+                result: "🚀 「Space Defender」が生成されました！プレイヤーは宇宙船を操作して隕石を避けながらエイリアンを倒すアクションゲームです。"
+            },
+            {
+                prompt: "パズルで数字を並べ替えるゲーム",
+                result: "🧩 「Number Puzzle Quest」が生成されました！数字タイルをスライドさせて目標の配置を目指すパズルゲームです。"
+            },
+            {
+                prompt: "かわいい動物を集めるアドベンチャー",
+                result: "🐾 「Animal Adventure」が生成されました！森の中を探索して可愛い動物たちを集めるコレクションゲームです。"
+            },
+            {
+                prompt: "物理演算を使ったボール転がしゲーム",
+                result: "⚽ 「Physics Ball Roll」が生成されました！重力と物理法則を活かしたパズルゲームです。"
+            }
+        ];
+
+        generateBtn.addEventListener('click', function() {
+            const prompt = gamePrompt.value.trim();
+
+            if (!prompt) {
+                demoText.textContent = "プロンプトを入力してください。";
+                demoResult.style.display = 'block';
+                return;
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = '生成中...';
+
+            // Simulate AI generation
+            setTimeout(() => {
+                const randomExample = gameExamples[Math.floor(Math.random() * gameExamples.length)];
+                demoText.textContent = randomExample.result;
+                demoResult.style.display = 'block';
+
+                generateBtn.disabled = false;
+                generateBtn.textContent = '🎮 ゲームを生成';
+
+                // Focus the result for screen readers
+                demoResult.focus();
+            }, 1500);
+        });
+
+        // Enter key support for demo input
+        gamePrompt.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generateBtn.click();
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            // Escape key to close demo result
+            if (e.key === 'Escape' && demoResult.style.display === 'block') {
+                demoResult.style.display = 'none';
+            }
+        });
+
+        // Add touch-action for mobile
+        document.addEventListener('touchstart', function() {}, { passive: true });
+    </script>
+</body>
+</html>
