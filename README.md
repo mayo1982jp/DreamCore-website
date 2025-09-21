@@ -75,7 +75,7 @@ DreamCoreは、2025年にローンチされたAIを活用したゲーム作成�
 
 ## 📁 プロジェクト構造
 
-```
+```markdown
 dreamcore/
 ├── index.html          # メインホームページ
 ├── AGENTS.md          # UI/UXガイドライン
@@ -161,3 +161,4 @@ dreamcore/
 **DreamCore** - AIで夢をゲームに。2025年、創造性の新時代へ。
 
 *最終更新: 2025年9月21日*
+
